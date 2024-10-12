@@ -705,6 +705,26 @@ public:
 
 	}
 
+	void deleteProductFromCategory()
+	{
+		string categoryName = "-1";
+		categoryName = inputCategoryNameFromUser();
+
+		string product = "-1";
+
+		if (categoryName != "-1")
+			product = inputProductFromUser(categoryName);
+
+		if (product != "-1")
+		{
+			deleteProduct(categoryName, product);
+			cout << "          Successful Delete\n";
+		}
+		else
+			cout << "          Failed\n";
+		char a = _getch();
+	}
+
 	map<string, Category*> marketCategory;
 
 private:
@@ -726,6 +746,9 @@ private:
 		return order;
 	}
 };
+
+
+
 
 
 int main()
