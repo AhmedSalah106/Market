@@ -175,6 +175,14 @@ public:
 	}
 
 
+	void deleteProduct(string productName)
+	{
+
+		productsOfCategory[productName]->setProductQuantity(0);
+
+	}
+
+
 private:
 
 	string categoryName;
@@ -240,7 +248,7 @@ int main()
 
 	cout << category->getProductQuantity("apple") << '\n';
 
-	category->modifyProduct("apple", 50, 30);
+	category->deleteProduct("apple");
 
 	cout << category->getProductQuantity("apple") << '\n';
 	return 0;
