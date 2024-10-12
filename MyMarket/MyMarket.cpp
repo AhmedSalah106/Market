@@ -10,6 +10,53 @@ using namespace std;
 
 
 
+void setColor(int color)
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	SetConsoleTextAttribute(hConsole, color);
+}
+
+template<class T>
+T getInput(int toColor)
+{
+	setColor(toColor);
+
+	T s;  cin >> s;
+
+	setColor(15);
+
+	return s;
+}
+
+enum Colors {
+	Black = 0,
+	Blue = 1,
+	Green = 2,
+	Red = 4,
+	White = 7,
+	Light_Blue = 9,
+	Light_Green = 10,
+	Light_Red = 12,
+	Bright_White = 15
+};
+
+void convertStringToLower(string& s)
+{
+
+	for (auto& it : s)
+		it = tolower(it);
+}
+
+bool tryAgain()
+{
+	cout << "Do You Want To Try Again ? Yes:NO => ";
+	string option = getInput<string>(Red);
+	cout << '\n';
+
+	convertStringToLower(option);
+	return option == "yes";
+}
 
 class Order
 {
@@ -50,6 +97,8 @@ private:
 	double totalPrice = 0;
 
 };
+
+
 
 
 class Product
@@ -167,7 +216,7 @@ public:
 
 	}
 
-	void modifyProduct(string productName,  int productQuantity ,double productPrice)
+	void modifyProduct(string productName, int productQuantity, double productPrice)
 	{
 		productsOfCategory[productName]->setProductPrice(productPrice);
 
@@ -232,6 +281,39 @@ public:
 		marketCategory[categoryName]->setProductPrice(Product, productPrice);
 	}
 
+	void addNewCategory()
+	{
+	categoryAgain:;
+		cout << "PLZ Enter Category Name That You Want To Add : ";
+		string categoryName = getInput<string>(4);
+		cout << '\n';
+
+		if (checkCategory(categoryName))
+		{
+			cout << "This Category Already Found\n";
+			if (tryAgain())
+			{
+				goto categoryAgain;
+			}
+		}
+		else
+		{
+			marketCategory[categoryName] = new Category();
+			cout << "          Successful Add \n";
+
+			if (tryAgain())
+				goto categoryAgain;
+		}
+	}
+
+	bool checkCategory(string categoryName)
+	{
+		if (marketCategory.find(categoryName) == marketCategory.end())
+			return false;
+
+		return true;
+	}
+
 
 	map<string, Category*> marketCategory;
 
@@ -242,14 +324,7 @@ private:
 
 int main()
 {
-	Category* category = new Category();
-
-	category->addProduct("apple", 100, 25);
-
-	cout << category->getProductQuantity("apple") << '\n';
-
-	category->deleteProduct("apple");
-
-	cout << category->getProductQuantity("apple") << '\n';
+	Market* market = new Market();
+	market->addNewCategory();
 	return 0;
 }
