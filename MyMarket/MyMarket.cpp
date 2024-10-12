@@ -585,6 +585,82 @@ public:
 		marketCategory[categoryName]->deleteProduct(productName);
 	}
 
+	void addNewProduct()
+	{
+
+	again:;
+		string categoryName = "-1";
+		categoryName = inputCategoryNameFromUser();
+
+		if (categoryName != "-1")
+		{
+			cout << "PLZ Enter Product Name : ";
+			string productName = getInput<string>(Red);
+			cout << '\n';
+			if (checkProduct(categoryName, productName))
+			{
+				cout << "This Product Already Added\n Do You Want To Add To It ? YES:NO => ";
+				string option = getInput<string>(Red);
+				convertStringToLower(option);
+				if (option == "yes")
+				{
+					cout << "PLZ Enter The Quantity You Want To Add It To The Current Quantity =>";
+					int productQuantity = getInput<int>(Red);
+
+					marketCategory[categoryName]->modifyProduct(productName
+						, marketCategory[categoryName]->getProductPrice(productName)
+						, marketCategory[categoryName]->getProductQuantity(productName) + productQuantity);
+				}
+			}
+			else
+			{
+
+			quantityAgain:;
+				cout << "PLZ Enter Quantity You Want To Add  =>  ";
+				int productQuantity = getInput<int>(Red);
+				cout << '\n';
+
+				if (productQuantity < 0)
+				{
+					cout << "Not Valid Number /n   ";
+					if (tryAgain())
+						goto quantityAgain;
+					else
+						return;
+				}
+
+			priceAgain:;
+				cout << "PLZ Enter The Price Of The This Product  =>  ";
+				double productPrice = getInput<double>(Red);
+				cout << '\n';
+
+				if (productPrice < 0)
+				{
+					if (tryAgain())
+					{
+						goto priceAgain;
+					}
+					else
+						return;
+				}
+
+				addProduct(categoryName, productName, productPrice, productQuantity);
+
+				cout << "          Successful Add \n";
+
+				if (tryAgain())
+					goto again;
+
+			}
+		}
+
+	}
+
+	void addProduct(string categoryName, string productName, double productPrice, int productQuantity)
+	{
+		marketCategory[categoryName]->addProduct(productName, productQuantity, productPrice);
+	}
+
 	map<string, Category*> marketCategory;
 
 private:
@@ -610,7 +686,5 @@ private:
 
 int main()
 {
-	Market* market = new Market();
-	market->addNewCategory();
 	return 0;
 }
