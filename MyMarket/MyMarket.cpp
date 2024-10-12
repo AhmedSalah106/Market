@@ -661,6 +661,50 @@ public:
 		marketCategory[categoryName]->addProduct(productName, productQuantity, productPrice);
 	}
 
+	void MoveProductToAnotherCategory()
+	{
+
+	Again:;
+
+		string currentCategory = "-1";
+
+		currentCategory = inputCategoryNameFromUser();
+
+		string productName = "-1";
+
+		if (currentCategory != "-1")
+		{
+			productName = inputProductFromUser(currentCategory);
+		}
+
+		string newCategory;
+
+		if (currentCategory != "-1")
+		{
+			newCategory = inputCategoryNameFromUser();
+		}
+
+		if (newCategory != "-1")
+		{
+			Product* product = marketCategory[currentCategory]->getProduct(productName);
+
+			deleteProduct(currentCategory, productName);
+
+			marketCategory[newCategory]->productsOfCategory[productName] = product;
+			marketCategory[newCategory]->setProductName(productName, product->getProductName());
+			marketCategory[newCategory]->setProductPrice(productName, product->getProductPrice());
+			marketCategory[newCategory]->setProductQuantity(productName, product->getProductQuantity());
+
+			cout << "          Successful Move\n";
+		}
+
+		if (tryAgain())
+		{
+			goto Again;
+		}
+
+	}
+
 	map<string, Category*> marketCategory;
 
 private:
