@@ -557,6 +557,16 @@ public:
 		}
 	}
 
+	void printCategoriesAndProducts()
+	{
+		for (auto& it : marketCategory)
+		{
+			string categoryName = it.first;
+
+			printSpecificMarketCategory(categoryName);
+		}
+	}
+
 	map<string, Category*> marketCategory;
 
 private:
