@@ -369,6 +369,27 @@ public:
 		return categoryName;
 	}
 
+	string inputProductFromUser(string categoryName)
+	{
+
+	productAgain:;
+		cout << "PLZ Enter Product Name : ";
+		string product = getInput<string>(Red);
+		cout << "\n";
+
+		if (!checkProduct(categoryName, product))
+		{
+			printProductNotFounded(product);
+			if (tryAgain())
+			{
+				goto productAgain;
+			}
+			else
+				product = "-1";
+		}
+		return product;
+	}
+
 	map<string, Category*> marketCategory;
 
 private:
