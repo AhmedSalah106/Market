@@ -821,6 +821,49 @@ void printMenue(map<int, string>& mp, int cnt)
 	}
 }
 
+bool checkUserNameAndPassword()
+{
+	string userName = "ahmedsalah";
+	string password = "1234";
+	bool T = true;
+	int cnt = 3;
+
+again:;
+
+	if (!T) {
+		setCursorPosition(36, 3);
+		cout << "   UserName or Password is Wrong  \n";
+	}
+	if (cnt == 0)
+	{
+		cout << "try again after 30 second XDDDD\n";
+		return false;
+	}
+	setCursorPosition(40, 5);
+	cout << "Please Enter User Name  : ";
+	setColor(Green);
+	string userInput;
+	getline(cin, userInput);
+	setColor(Bright_White);
+	cout << '\n';
+
+	setCursorPosition(40, 6);
+	cout << "please Enter Password  : ";
+	setColor(Green);
+	string passwordInput = inputPassword(password);
+	setColor(Bright_White);
+	cout << '\n';
+
+	if (userName != userInput || password != passwordInput)
+	{
+		cnt--;
+		T = false;
+		clearConsole();
+		goto again;
+	}
+
+	return true;
+}
 
 void ControlConsole()
 {
@@ -836,7 +879,8 @@ void ControlConsole()
 	myData[7] = "EXIST";
 
 	Market* market = new Market();
-	
+	if (checkUserNameAndPassword())
+	{
 		while (true)
 		{
 
@@ -935,6 +979,7 @@ void ControlConsole()
 
 		}
 	}
+}
 
 
 int main()
