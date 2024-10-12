@@ -167,6 +167,14 @@ public:
 
 	}
 
+	void modifyProduct(string productName,  int productQuantity ,double productPrice)
+	{
+		productsOfCategory[productName]->setProductPrice(productPrice);
+
+		productsOfCategory[productName]->setProductQuantity(productQuantity);
+	}
+
+
 private:
 
 	string categoryName;
@@ -226,6 +234,14 @@ private:
 
 int main()
 {
+	Category* category = new Category();
 
+	category->addProduct("apple", 100, 25);
+
+	cout << category->getProductQuantity("apple") << '\n';
+
+	category->modifyProduct("apple", 50, 30);
+
+	cout << category->getProductQuantity("apple") << '\n';
 	return 0;
 }
