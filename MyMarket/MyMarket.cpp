@@ -567,6 +567,20 @@ public:
 		}
 	}
 
+	void deleteCategory()
+	{
+		string categoryName = "-1";
+		categoryName = inputCategoryNameFromUser();
+		if (categoryName != "-1")
+		{
+			delete marketCategory[categoryName];
+			marketCategory.erase(categoryName);
+			cout << "          Successful Delete \n";
+		}
+		char a = _getch();
+	}
+
+
 	map<string, Category*> marketCategory;
 
 private:
