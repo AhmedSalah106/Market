@@ -340,6 +340,14 @@ public:
 		cout << " not founded\n";
 	}
 
+	bool checkProduct(string categoryName, string productName)
+	{
+		if (marketCategory[categoryName]->productsOfCategory.find(productName) == marketCategory[categoryName]->productsOfCategory.end())
+			return false;
+
+		return true;
+	}
+
 	map<string, Category*> marketCategory;
 
 private:
