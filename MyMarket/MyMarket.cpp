@@ -155,6 +155,18 @@ public:
 		return productsOfCategory[productName];
 	}
 
+	void addProduct(string productName, int productQuantity, double productPrice)
+	{
+		productsOfCategory[productName] = new Product();
+
+		productsOfCategory[productName]->setProductName(productName);
+
+		productsOfCategory[productName]->setProductQuantity(productQuantity);
+
+		productsOfCategory[productName]->setProductPrice(productPrice);
+
+	}
+
 private:
 
 	string categoryName;
@@ -214,9 +226,6 @@ private:
 
 int main()
 {
-
-
-
 
 	return 0;
 }
