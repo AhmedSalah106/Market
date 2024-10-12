@@ -327,6 +327,19 @@ public:
 		cout << " not founded\n";
 	}
 
+	void printProductNotFounded(string productName)
+	{
+		cout << "This Product : ";
+
+		setColor(Red);
+
+		cout << productName;
+
+		setColor(Bright_White);
+
+		cout << " not founded\n";
+	}
+
 	map<string, Category*> marketCategory;
 
 private:
