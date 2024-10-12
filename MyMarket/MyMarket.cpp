@@ -314,6 +314,18 @@ public:
 		return true;
 	}
 
+	void printCategoryNotFounded(string categoryName)
+	{
+		cout << "This Category : ";
+
+		setColor(Red);
+
+		cout << categoryName;
+
+		setColor(Bright_White);
+
+		cout << " not founded\n";
+	}
 
 	map<string, Category*> marketCategory;
 
