@@ -580,6 +580,10 @@ public:
 		char a = _getch();
 	}
 
+	void deleteProduct(string categoryName, string productName)
+	{
+		marketCategory[categoryName]->deleteProduct(productName);
+	}
 
 	map<string, Category*> marketCategory;
 
