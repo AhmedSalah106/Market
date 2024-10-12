@@ -369,6 +369,14 @@ public:
 		return categoryName;
 	}
 
+
+	bool checkQuantity(string categoryName, string productName, int productQuantity)
+	{
+		if (marketCategory[categoryName]->getProductQuantity(productName) >= productQuantity)
+			return true;
+
+		return false;
+	}
 	string inputProductFromUser(string categoryName)
 	{
 
@@ -390,10 +398,185 @@ public:
 		return product;
 	}
 
+	void makeOrder()
+	{
+
+		set<string>listOfOrder;
+
+		double totalPrice = 0;
+
+	again:;
+
+		bool checkInput = true;
+		string categoryName = "-1";
+
+		categoryName = inputCategoryNameFromUser();
+		if (categoryName != "-1")
+			printSpecificMarketCategory(categoryName);
+
+		string productName = "-1";
+
+		if (categoryName != "-1") {
+			productName = inputProductFromUser(categoryName);
+		}
+
+		if (productName != "-1")
+		{
+			if (marketCategory[categoryName]->getProductQuantity(productName) == 0)
+			{
+				cout << "This Product Found But There Is No Quantity Now\n";
+				if (tryAgain())
+				{
+					goto again;
+				}
+				else
+					productName = "-1";
+			}
+		}
+
+		int productQuantity;
+		if (productName != "-1") {
+			cout << "PLZ Enter The Quantity : ";
+			productQuantity = getInput<int>(4);
+			cout << '\n';
+		}
+		Order* order = NULL;
+		if (productName != "-1")
+			order = makeOrder(categoryName, productName, productQuantity);
+
+		if (order != NULL)
+		{
+			if (order->getTotalPrice())
+				totalPrice += order->getTotalPrice();
+
+			for (auto& it : order->productSelled)
+				listOfOrder.insert(it);
+
+			cout << "Do You Want to Continue ? Yes|No => ";
+			string option;
+
+			option = getInput<string>(Red);
+
+			convertStringToLower(option);
+
+			if (option == "yes") {
+				goto again;
+			}
+		}
+		else if (productName != "-1")
+		{
+			if (tryAgain()) {
+				goto again;
+			}
+		}
+
+		if (!totalPrice) {
+			return;
+		}
+		cout << "\n\n   **Your Receipt.....\n";
+
+		int cnt = 0;
+
+		for (auto& it : listOfOrder)
+		{
+			cout << ++cnt << " => " << it << '\n';
+		}
+
+		cout << "And Your Total price = ";
+
+		setColor(Red);
+
+		cout << totalPrice;
+
+		setColor(White);
+
+		cout << "\n";
+
+		char a = _getch();
+	}
+
+	Order* makeOrder(string CategoryName, string productName, int productQuantity)
+	{
+
+		if (!checkCategory(CategoryName))
+		{
+
+			printCategoryNotFounded(CategoryName);
+
+		}
+		else if (!checkProduct(CategoryName, productName))
+		{
+
+			printProductNotFounded(productName);
+
+		}
+		else if (!checkQuantity(CategoryName, productName, productQuantity))
+		{
+
+			cout << "This Product found but there is no quantity now\n";
+
+		}
+		else
+		{
+			Order* order = new Order();
+
+			order = sellOrder(CategoryName, productName, productQuantity);
+
+			return order;
+
+		}
+
+		Order* order = NULL;
+
+		return order;
+	}
+
+	void printSpecificMarketCategory(string categoryName)
+	{
+		if (marketCategory[categoryName]->productsOfCategory.empty())
+			cout << "No Products in This Category\n";
+		else
+		{
+			cout << categoryName << "......\n";
+			for (auto& it : marketCategory[categoryName]->productsOfCategory)
+			{
+				Product* product = it.second;
+				if (product->getProductQuantity() == 0)
+				{
+					cout << " Product : ";
+					setColor(Red);
+					cout << product->getProductName();
+					setColor(Bright_White);
+					cout << " found but there is no quantity now\n";
+					continue;
+				}
+				cout << "   Product Name : " << product->getProductName()
+					<< "    Product Quantity : " << product->getProductQuantity()
+					<< "    product Price : " << product->getProductPrice() << '\n';
+			}
+		}
+	}
+
 	map<string, Category*> marketCategory;
 
 private:
 
+	Order* sellOrder(string categoryName, string productName, int productQuantity)
+	{
+		Order* order = new Order();
+
+		order->productSelled.insert(productName);
+
+		double totalProductPrice = marketCategory[categoryName]->getProductPrice(productName) * productQuantity;
+
+		order->setTotalPrice(totalProductPrice);
+
+		int remainQuantity = marketCategory[categoryName]->getProductQuantity(productName) - productQuantity;
+
+		marketCategory[categoryName]->setProductQuantity(productName, remainQuantity);
+
+		return order;
+	}
 };
 
 
