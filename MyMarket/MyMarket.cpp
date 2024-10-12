@@ -348,6 +348,27 @@ public:
 		return true;
 	}
 
+	string inputCategoryNameFromUser()
+	{
+		string categoryName = "-1";
+
+	categoryAgain:;
+		cout << "PLZ Enter Category Name : ";
+		categoryName = getInput<string>(Red);
+		cout << '\n';
+		if (!checkCategory(categoryName))
+		{
+			printCategoryNotFounded(categoryName);
+			if (tryAgain())
+			{
+				goto categoryAgain;
+			}
+			else
+				categoryName = "-1";
+		}
+		return categoryName;
+	}
+
 	map<string, Category*> marketCategory;
 
 private:
