@@ -764,6 +764,39 @@ private:
 	}
 };
 
+
+
+string inputPassword(string password)
+{
+	int s = password.size();
+	string ss;
+
+	int cnt = 0;
+	while (true)
+	{
+		cnt++;
+		char a = _getch();
+
+		if (a == 8)
+		{
+			ss.pop_back();
+			continue;
+		}
+		if (a == 13)
+		{
+			break;
+		}
+
+		ss.push_back(a);
+		cout << "*";
+		if (cnt == s)
+			break;
+	}
+
+	return ss;
+}
+
+
 void printMenue(map<int, string>& mp, int cnt)
 {
 	setCursorPosition(40, 3);
