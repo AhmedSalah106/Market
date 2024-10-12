@@ -17,6 +17,23 @@ void setColor(int color)
 	SetConsoleTextAttribute(hConsole, color);
 }
 
+
+void setCursorPosition(int x, int y)
+{
+	COORD coord;
+	coord.X = x;
+	coord.Y = y;
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	SetConsoleCursorPosition(hConsole, coord);
+}
+
+void clearConsole()
+{
+	system("cls");
+}
+
+
 template<class T>
 T getInput(int toColor)
 {
@@ -747,11 +764,149 @@ private:
 	}
 };
 
+void printMenue(map<int, string>& mp, int cnt)
+{
+	setCursorPosition(40, 3);
+	setColor(Light_Green);
+	cout << "      Ahmed's Market\n";
+	setColor(Bright_White);
+
+	for (int i = 0;i <= 7;i++)
+	{
+		if (i == cnt)
+		{
+			setColor(Light_Green);
+			setCursorPosition(36, i + 5);
+			cout << "=>>" << i + 1 << ' ' << mp[i];
+			setColor(Bright_White);
+		}
+		else
+		{
+			setCursorPosition(40, i + 5);
+			cout << i + 1 << ' ' << mp[i];
+		}
+	}
+}
 
 
+void ControlConsole()
+{
+	int cnt = 0;
+	map<int, string> myData;
+	myData[0] = "Display Market Categories And Products\n";
+	myData[1] = "Add Category\n";
+	myData[2] = "Delete Category\n";
+	myData[3] = "Add Or Modify Product\n";
+	myData[4] = "Remove Product\n";
+	myData[5] = "Move Product To Another Category\n";
+	myData[6] = "Sell Product\n";
+	myData[7] = "EXIST";
+
+	Market* market = new Market();
+	
+		while (true)
+		{
+
+		loop:;
+
+			clearConsole();
+			printMenue(myData, cnt);
+			char a = _getch();
+			switch (a)
+			{
+			case 49:
+				cnt = 0;
+				break;
+
+			case 50:
+				cnt = 1;
+				break;
+
+			case 51:
+				cnt = 2;
+				break;
+
+			case 52:
+				cnt = 3;
+				break;
+
+			case 53:
+				cnt = 4;
+				break;
+
+			case 54:
+				cnt = 5;
+				break;
+
+			case 55:
+				cnt = 6;
+				break;
+
+			case 56:
+				cnt = 7;
+				break;
+
+			case 72:
+				if (cnt == 0)
+					cnt = 7;
+				else
+					cnt--;
+				break;
+
+			case 80:
+
+				if (cnt == 7)
+					cnt = 0;
+				else
+					cnt++;
+				break;
+			case 13:
+				clearConsole();
+				if (cnt == 0)
+				{
+					cout << "this is our our categories and products \n";
+					market->printCategoriesAndProducts();
+					a = _getch();
+				}
+				else if (cnt == 1)
+				{
+
+					market->addNewCategory();
+				}
+				else if (cnt == 2)
+				{
+					market->deleteCategory();
+				}
+				else if (cnt == 3)
+				{
+					market->addNewProduct();
+				}
+				else if (cnt == 4)
+				{
+					market->deleteProductFromCategory();
+				}
+				else if (cnt == 5)
+				{
+					market->MoveProductToAnotherCategory();
+				}
+				else if (cnt == 6)
+				{
+					market->makeOrder();
+				}
+				else if (cnt == 7)
+					return;
+
+			default:
+				goto loop;
+			}
+
+		}
+	}
 
 
 int main()
 {
+
+	ControlConsole();
 	return 0;
 }
